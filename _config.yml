@@ -11,6 +11,8 @@ url:                 https://gyan3098.github.io/30DaysOfHackingChallenge
 baseurl:             ''
 paginate:            5
 permalink:           pretty
+github:
+  repo:              https://github.com/gyan3098/30DaysOfHackingChallenge.git
 
 # About/contact
 author:
