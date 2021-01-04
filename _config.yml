@@ -12,7 +12,7 @@ baseurl:             ''
 paginate:            5
 permalink:           pretty
 github:
-  repo:              https://github.com/gyan3098/30DaysOfHackingChallenge.git
+  repo:              https://github.com/gyan3098/30DaysOfHackingChallenge
 
 # About/contact
 author:
