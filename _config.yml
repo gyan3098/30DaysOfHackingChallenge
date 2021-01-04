@@ -7,7 +7,7 @@ tagline:            "Hacking"
 description: >- # this means to ignore newlines until "baseurl:"
   "In these 30 days challenge, I will be covering a lot of fields and topics
   of hacking"
-url:                 https://github.com/gyan3098/30DaysOfHackingChallenge/tree/main/
+url:                 https://github.com/gyan3098/30DaysOfHackingChallenge/tree/main
 baseurl:             ''
 paginate:            5
 permalink:           pretty
