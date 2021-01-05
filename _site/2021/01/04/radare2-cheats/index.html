@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Radare2-cheats &middot; My 30 Days of Hacking Challenge
+    
+  </title>
+
+  
+  <link rel="canonical" href="http://localhost:4000/2021/01/04/radare2-cheats/">
+  
+
+  <link rel="stylesheet" href="http://localhost:4000/public/css/poole.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/syntax.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/lanyon.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/public/pageIcon.png">
+  <link rel="shortcut icon" href="http://localhost:4000/public/pageIcon.ico">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="http://localhost:4000/atom.xml">
+
+  
+</head>
+
+
+  <body class="layout-reverse">
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox" >
+<!--  -->
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p>In these 30 days challenge, I will be covering a lot of fields and topics of hacking</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item" href="http://localhost:4000/">Home</a>
+
+    
+
+    
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="http://localhost:4000/about/">About</a>
+        
+      
+    
+      
+    
+      
+    
+
+    <a class="sidebar-nav-item" href="https://github.com/gyan3098/30DaysOfHackingChallenge/archive/main.zip">Download</a>
+    <a class="sidebar-nav-item" href="https://github.com/gyan3098/30DaysOfHackingChallenge">GitHub project</a>
+    <span class="sidebar-nav-item">Currently v1.1.0</span>
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; 2021. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">My 30 Days of Hacking Challenge</a>
+            <small>Hacking</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="post">
+  <h1 class="post-title">Radare2-cheats</h1>
+  <span class="post-date">04 Jan 2021</span>
+  <p>r2 has an embedded webserver and ships some	basic user interfaces written in html/js.
+$ r2 -c=H <binary_file_name></binary_file_name></p>
+
+<p>‘seek’ command is abbreviated as ‘s’<br />
+ex:-<br />
+	[0x000000]&gt; s + 10 <br />
+	[0x000000]&gt; s +0x25<br />
+	[0x000000]&gt; s + [0x100+ptr_table]</p>
+
+<p>[0x000000]&gt; s++		:- seek forward<br />
+[0x000000]&gt; s–		:- seek backward</p>
+
+<p>‘print’ alias as ‘p’ &lt;- it takes number of submodes - the 2nd letter secifying a desired mode.</p>
+
+<p>ex:-
+	[0x000000]&gt; px :- to print in hexadecimal<br />
+	[0x000000]&gt; pd :- for disassembling</p>
+
+<p>to be allowed to write files (-w) option to r2 when opening a file.(‘x’ subcommand for hexpairs),(‘a’ subcommand for even assembly opcodes)
+ex :-
+	[0x000000]&gt; w hello world		:- string
+	[0x000000]&gt; wx 90 90 90 90	:- hexpairs
+	[0x000000]&gt; wa jmp 0x808140	:-	assemble<br />
+	[0x000000]&gt; wf inline.bin 		:- write contents of file</p>
+
+<p>append ‘?’ to a command will show its help message<br />
+ex:-<br />
+	[0x000000]&gt; a? 		:- will show all commands starting with a</p>
+
+<p>[0x000000]&gt; VV		:- To enter block Visual  mode<br />
+[0x000000]&gt; q 		:- To exit block Visual mode<br />
+in visual mode we can use HJKL keys to navigate(left,down,up,right ,respectively)</p>
+
+<p>cursor mode :- toggled by ‘c’ key
+in toggle mode we can arrange the alignment of the code</p>
+
+<p>$ ‘TAB’ 		:- to toggle between differnt parts of the code(blue border shows on which block you are)</p>
+
+<p>To enter Visual  mode(hex representation) :- $ V
+To exit block Visual mode :- $ q
+in visual mode we can use HJKL keys to navigate(left,down,up,right ,respectively)
+To overwrite the bytes:-
+	$ i
+‘TAB’:- To switch between the hex(middle) and string(right) columns</p>
+
+<p>to scroll different visual mode representation:-
+	$ p or P</p>
+
+<hr />
+<p>MOST IMPORTANT VISUAL MODE  curses-like panels interfaces:-
+	$ V!</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>'F7' or 's' :- step into current instruction
+'F8' or 'S' :- step over current instruction
+'F2'		:- to set breakpoints
+</code></pre></div></div>
+
+<p>This mode contains many options on the top.You can use it like an application
+and navigate to different part of code</p>
+
+<hr />
+
+<p>cursor mode :- toggled by ‘c’ key
+to select a byte range in cursor mode :- SHIFT + H
+										 SHIFT + J
+										 SHIFT + K
+										 SHIFT + L</p>
+
+<hr />
+<p>Important command line options
+——————————-
+-A 				:- run ‘aaa’ command to analyze all referenced code
+-B [addr] 		:- set base address for PIE binaries
+-c ‘cmd..’ 		:- execute radare command
+-C 				:- file is host:port(alias for -c=https://%s/cmd/)
+-d 				:- debug the executable ‘file’ for running ‘pid’
+-D [backend]	:- enable debug mode
+-H ([var])		:- display variable
+-K [OS/kern]	:- set asm.os (linux,macos,w32,netbsd,…)
+-m [addr]		:- map file at given address(loadaddr)
+-M 				:- do not demangle symbol names
+-p [prj]		:- use project ,list if no arg,load if no file
+-P [file]		:- apply repatch file and quit
+-s [addr]		:- initial seek
+-w 				:- open file in write mode</p>
+
+<hr />
+<p>Common usage patterns
+——————————–
+Open a file in write mode without parsing the file format headers
+$ r2 -nw file</p>
+
+<p>Quickly get into an r2 shell without opening any file
+$ r2 -</p>
+
+<p>Set the configuration variable
+$ r2 -e scr.color=0 blah.bin</p>
+
+<p>Use an existing project file
+$ r2 -p test</p>
+
+<hr />
+<p>Command Format
+———————————–
+general format
+[.][times][cmd][~grep][@[@iter]addr!size][|&gt;pipe]	;</p>
+
+<p>to repeatedly execute a command,prefix the command with a number
+px 		#run px
+3px		#run px 3 times</p>
+
+<p>To execute a command in shell context  :- prefix  ‘!’
+To use the cmd callback from the I/O plugin :- prrfix with ‘=!’</p>
+
+<p>ex:-
+	$ ds 					:- call the debugger’s ‘step’ command
+	$ px 200 @ esp 			:- show 200 hex bytes at esp
+	$ pc &gt; file.c 			:- dump buffer as a C byte array to file.c
+	$ wx 90 @@ sym.*		:- write a nop on every symbol
+	$ pd 2000 | grep eax 	:-	grep opcodes that use the ‘eax’ register
+	$ px 20 ; pd 3 ; px 40 	:- multiple commands in a single line</p>
+
+<p>pipe (‘|’) is available in r2 shell
+can be used to filter the output with commands like wc,grep,less</p>
+
+<p>there is also built-in grep(~)</p>
+
+<p>$ ~? 		:- for help
+‘~’ character enables internal grep-like function used to filter output of any command</p>
+
+<p>ex:-
+	pd 20~call 		:- disassemble 20 instructions and grep output for ‘call’
+	pd 20~call:0	:- get first row
+	pd 20~call:1	:- get second row
+	pd 20~call[0]	:- get first column
+	pd 20~call[1]	:- get second column
+	pd 20~call:0[0]	:- grep the fist column of the first row matching ‘call’</p>
+
+<p>’@’ character is used to specify a temporary offset at which command to its left will be executed</p>
+
+<p>ex:-
+	$ pd  @ 0x100000fce		:- to disasemble 5 instructions at address 0x10000fce</p>
+
+<p>$ !~…	:-to see the history</p>
+
+<hr />
+<p>EXPRESSIONS
+——————————–
+to evaluate mathematical expressions pretend them with command ‘?’</p>
+
+<p>[0xb7f9d810]&gt;	?vi	0x8048000
+134512640
+[0xv7f9d810]&gt;	?vi	0x8048000+34
+134512674
+[0xb7f9d810]&gt;	?vi	0x8048000+0x34
+134512692
+[0xb7f9d810]&gt;	?	1+2+3-4*3
+hex					0xfffffffffffffffa
+octal			01777777777777777777772
+unit				17179869184.0G
+segment	fffff000:0ffa
+int64			-6
+string		“\xfa\xff\xff\xff\xff\xff\xff\xff”
+binary		0b1111111111111111111111111111111111111111111111111111111111111010 fvalue:	-6.0
+float:		nanf
+double:	nan
+trits			0t11112220022122120101211020120210210211201</p>
+
+<p>supporte arithmetic:-
+‘+’,’-‘,’*’,’/’,’%’
+‘&gt;’		:- shift right
+‘&lt;’		:- shift left</p>
+
+<p>To use of logical OR , quote the whole comman to avoid executing | pipe:
+ex:-
+	$ “? 1 | 2”</p>
+
+<p>$ $$	:- here(the current virtual seek)
+$ $1	:- opcode length
+$ $s 	:- file size
+$ $j 	:- jump address(e.g. jmp 0x10)
+$ $f 	:- jump fail address (e.g. jz 0x10 =&gt; next instruction)
+$ $m 	:- opcode memory reference(e.g. mov eax,[0x10] =&gt; 0x10)
+$ $b 	:- block size</p>
+
+<p>ex:-
+	[0x4A13B8C0]&gt;	pd	1	@	+$l
+	0x4A13B8C2			call	0x4a13c000</p>
+
+<hr />
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Basic Debugger Session ------------------------------------------------ To debug a program ,start with '-d' option $ pidof &lt;binaryname&gt;		:- to know the process id of binary 32220 $r2 -d 32220 			:- to attach to that process
+</code></pre></div></div>
+
+<p>$ r2 -d <binaryname>	:- to attach r2 directly to the binary(in debug mode)</binaryname></p>
+
+<p>$ r2 -a arm -b 16 -d gdb://192.168.1.43:9090</p>
+
+<p>To continue program until a specific address is reached
+‘dcu’ (debug continue until) takes the address of the placee to stop at
+$ dcu main</p>
+
+<p>Common commands used with debugger:-
+$ ds 3			:- step 3 times
+$ db 0x8048920	:- setup a breakpoint
+$ db -0x8048920 :- remove a breakpoint
+$ dc 			:- continue process execution
+$ dcs 			:- continue until syscall
+$ dd 			:- manipulate file descriptors
+$ dm 			:- show process maps
+$ dmp A S rwx	:- change permissions of page at A and size S
+$ dr eax=33		:- set register value, eax = 33</p>
+
+<p>To enter visual debugger mode use ‘Vpp’:
+[0xb7f0c8c0]&gt;	Vpp</p>
+
+<p>Pressing ‘p’ will allow you to cycle through the rest of visual mode views
+‘F7’ or ‘s’ :- step into current instruction
+‘F8’ or ‘S’ :- step over current instruction
+‘c’			:- to toggle the cursor mode
+‘F2’		:- to set breakpoints</p>
+
+<p>To see value of variable and its location
+$ .afvd <variablename>	:- to see value of variable
+$ afvd		 			:- to see value of all variables of that function</variablename></p>
+
+<p>In visual mode we can enter regular radare commands by prepending them with
+‘:’ .
+ex:-
+	&lt;Press ‘:’&gt;
+	x @ esi</p>
+
+<p>To get help on visual mode</p>
+
+<p>Most strings are zero terminated.When we recover the control over the process,we get the arguments passed to syscall,pointed by %ebx.</p>
+
+<p>[0x000000]&gt; dcs open 		:- to continue the execution of a program until it executes the ‘open’ syscall</p>
+
+<p>[0x000000]&gt; dr
+eax		0xffffffda		esi		0xffffffff	eip		0x4a14fc24
+ebx		0x4a151c91		edi		0x4a151be1	oeax	0x00000005
+ecx		0x00000000		esp		0xbfbedb1c	eflags	0x200246		
+edx		0x00000000		ebp		0xbfbedbb0	cPaZstIdor0	(PZI)</p>
+
+<p>[0x000000]&gt;	psz	@	0x4a151c91
+/etc/ld.so.cache</p>
+
+<hr />
+<p>Print memory contents
+—————————–
+[0x000000]&gt; pf ‘format memory string’ @ ‘address’
+ex:-
+	[0x000000]&gt; pf xxS @ rsp</p>
+
+<hr />
+<p>Disassembly
+————-
+[0x000000]&gt; pd 1		:- 	To disassemble code, it accepts a numeric value to specify how many instructions should be disassembled</p>
+
+<p>[0x000000]&gt; pD 	0x16	:- same as ‘pd’ but it takes a given number of bytes</p>
+
+<hr />
+<p>Disassembly Syntax
+——————–
+[0x000000]&gt; e asm.arch=?? 			:- to list all the available architecture
+[0x000000]&gt; e asm.arch=dalvik		:- to set the architecture flavor for the disassembler</p>
+
+<p>[0x000000]&gt; e asm.syntax = intel 	:- to set the flavor of the assembly syntax used by a disassembler engine</p>
+
+<hr />
+<p>XREF
+—–
+When r2 has discovered a XREF during the analysis, it will show you the information in the Visual Disassembly using ‘XREF’ tag:</p>
+
+<p>;DATA XREF from 0x00402e0e (unk)
+str.David_Mackenzie:</p>
+
+<p>To see where this string is called, press ‘x’,if you want to the location where data is used then pressng the corresponding number [0-9] on your keyboard
+‘X’ corresponds to the reverse operation aka ‘axf’</p>
+
+<p>To enable this view use this config var ‘e dbg.funcarg = true’</p>
+
+<hr />
+<p>Visual Ascii Art Panels
+————————-
+$ | 	:- split the current panel vertically
+$ - 	:- split the current panel horizontally
+$ * 	:- show pseudo code/r2dec in the current panel
+$ : 	:- run r2 commands in prompt
+$ G 	:- show graph in the current panel
+$ m 	:- select the menu pannel
+$ sS 	:- step in /step over
+$ t 	:- rotate related commands in a panel
+$ w 	:- start window mode
+$ X 	:- close current panel
+$ z 	:- swap current panel with the first one</p>
+
+<p>Search is initiated by ‘/’ command
+[0x000000]&gt; /?		:- for help</p>
+
+<p>r2 generates a “hit” flag for every entry found. We can then use the ‘ps’
+commands to see the strings stored at the offsets marked by the flags in this group,and they will have names of the form ‘hit0_<index>'.</index></p>
+
+<p>[0x000000]&gt; ps @ hit0_0</p>
+
+<p>[0x000000]&gt; /w Hello 		:- to search for wide-char strings(use ‘/w’ command)</p>
+
+<p>[0x000000]&gt; /i Stallman 	:- to perform a case-insensitive search for strings</p>
+
+<p>[0x000000]&gt; /x 7f454c46 	:- to search for hexadecimal values</p>
+
+<p>[0x000000]&gt; f 				:- To see the hits</p>
+
+<p>[0x000000]&gt; f- hit* 		:- to remove all hit flags
+[0x000000]&gt;  //				:- repeat last search</p>
+
+<hr />
+<p>Configuring search options
+—————————
+[0x000000]&gt; e search.from = 0		:- start address
+[0x000000]&gt; e search.to = 0			:- end address
+[0x000000]&gt; e search.flags = true 	:- if enabled, create flags on hits</p>
+
+<hr />
+<p>Search automation
+——————————
+‘cmd.hit’ configuration variable is used to define a r2 command to be executed when a matching entry is found by the search engine
+to run several commands,separate them with ‘;’
+[0x000000]&gt; e cmd.hit = p8 8
+[0x000000]&gt; / lib</p>
+
+<p>[0x000000]&gt; /b gyan		:- to search the string backwards
+‘/b’ is doing same as ‘/’ but backward ,so everything that applies for ‘/’ can be used with ‘/b’.
+[0x000000]&gt; /bx 90 		:- to seach hex 90 backward</p>
+
+<p>[0x000000]&gt; e asm.pseudo = true 	:- to enable pseudo syntax
+[0x000000]&gt; asm.pseudo 	:- experimental pseudocode view</p>
+
+<p>To add the comment to a particular line/addres we can use ‘Ca’ command
+[0x00000000]&gt; CCa 0x0000002	this guy seems legit</p>
+
+<hr />
+<p>Recursive analysis
+ —————————
+ [0x000000]&gt; aab 	:- perform basic-block analysis
+ [0x000000]&gt; aac 	:- analyze function calls from one
+ [0x000000]&gt; aaf 	:- analyze all function calls
+ [0x000000]&gt; aar 	:- analyze data references
+ [0x000000]&gt; aad 	:- analyze pointers to pointers references</p>
+
+<p>[0x000000]&gt; axt [addr] 	:- find data/code references to this address
+[0x000000]&gt; axf [addr] 	:- find data/code references from this address</p>
+
+<hr />
+<p>Managing variables
+——————————–
+the main variables commands are located in ‘afv’ namespace:
+[0x000000]&gt; afvR [varname]	:- list addresses where vars are accessed (READ)
+[0x000000]&gt; afvW [varname] 	:- list addresses where vars are accessed (WRITE)
+[0x000000]&gt; afva 			:- analyze function arguments/locals
+[0x000000]&gt; afvd name 		:- output r2 command for displaying the value of args/locals in the debugger
+[0x000000]&gt; afvb[?] 		:- manipulate bp based arguments/locals
+[0x000000]&gt;afvs[?]			:- manipulate sp based arguments/locals</p>
+
+<p>We can rename variable affecting all places it was referenced
+[0x000000]&gt; afvn [old_name] [new_name]	:- rename argument/local
+[0x000000]&gt; afv- 						:- to simply remove the variable or argument</p>
+
+<p>‘afvt’ which allows you to change the type of variable
+[0x000000]&gt; afvt local_10h char*</p>
+
+<hr />
+<p>Macros
+————————-
+r2 allows to write simple macros, using this contruction</p>
+
+<p>[0x000000]&gt; (qwe; pd 4; ao)		:- this will define a macro called qwe’ which runs sequentially first ‘pd 4’ then ‘ao’</p>
+
+<p>[0x000000]&gt; .(qwe)				:- calling the macro
+[0x000000]&gt; (-qwe)				:- deleting the macro
+[0x000000]&gt; (* 					:- listing all available macros</p>
+
+<p>It’s possible to create a macro that takes arguments
+[0x000000]&gt; (foo x y; pd $0; s +$1)</p>
+
+<p>the arguments are named by index,starting from 0: $0,$1,..</p>
+
+<hr />
+<p>R2pipe
+——————
+$ pip install r2pipe</p>
+
+<p>import r2pipe
+r2 = r2pipe.open(“/bin/ls”)
+r2.cmd(‘aa’)
+print(r2.cmd(“afl”))
+print(r2.cmdj(“aflj”))	# evaluate JSONs and returns an object</p>
+
+<hr />
+<p>To script radare2
+——————
+r2 -i <scriptfile> ...	:- run a script after loading the file
+r2 -I <scriptfile> ...	:- run a script before loading the file</scriptfile></scriptfile></p>
+
+<p>[0x000000]&gt; . scriptfile :- interpret the file</p>
+
+<p>refer radare2 book PAGE 219,220,221</p>
+
+<hr />
+<p>Registers
+———————
+[0x000000]&gt; dr 			:- display value of all registers
+[0x000000]&gt; dr rip 		:- get value of ‘rip’
+[0x000000]&gt; dr rip = esp :- set ‘rip’ as esp
+[0x000000]&gt; dr* 		:- Appending ‘*’ will show radare commands</p>
+
+<p>An old copy of registers is stored all the time to keep track of the changes during execution of a program being analyzed.
+[0x000000]&gt; oregs 		:- to see old copy of registers</p>
+
+<p>CTF solving using Radare2 link:-
+https://r2wiki.readthedocs.io/en/latest/home/ctf-solving-using-radare2/</p>
+
+<p>[0x000000]&gt; dm.			:-(See the dot) To know the memory-map we are currently in</p>
+
+<p>[0x000000]&gt; dmm 		:- to list modules(libraries,binaries loaded in memory)</p>
+
+<p>[0x000000]&gt; dmi. 	 	:- to see the closest symbol to the current adress</p>
+
+<hr />
+<p>HEAP
+——————
+[0x000000]&gt; dmh 		:- to display a map of the heap which is useful for thosse who are interesting in inspecting the heap and its content</p>
+
+<p>[0x000000]&gt; dmhg 		:- to see a graph layout of heap</p>
+
+<hr />
+<p>Reverse Debugging
+————————–
+radare2 has reverse debugger,that can seek the program counter backward
+Firstly you need to save program state at the point you want to start recording</p>
+
+<p>[0x000000]&gt; dts+ 	:- syntax for recording
+[0x000000]&gt; dts 	:- for recording and managing program states</p>
+
+<p>After recording the states, we can seek pc back and forth to any points after saved address.
+ex:-
+	[0x000000]&gt; 2dso
+	[0x000000]&gt; dr rip
+	0x004028ae
+	[0x000000]&gt; dsb
+	continue	until	0x004028a2
+	hit	breakpoint	at:	4028a2
+	[0x000000]&gt; dr rip
+	0x004028a2</p>
+
+<p>‘dcb’ seeks program counter until hit the latest breakpoints.So once set a breakpoint, you can back to it any time</p>
+
+<p>[0x000000]&gt; dts 	:- to see current recorded program states
+session:	0			at:0x004028a0			“”
+session:	1			at:0x004028c2			“”</p>
+
+<p>we can also add comment
+‘dtsC’ to add comment to saved states
+[0x000000]&gt; dtsC 0 program start
+[0x000000]&gt; dtsC 1 decryption start
+[0x000000]&gt; dts
+session:	0			at:0x004028a0			“program	start”
+session:	1			at:0x004028c2			“decryption	start</p>
+
+<p>Program records can exported to file and of course import it
+[0x000000]&gt; dtst records_for_test
+Session	saved in records_for_test.session and dump in records_for_test.dump
+[0x000000]&gt; dtsf records_for_test</p>
+
+</div>
+
+
+<div class="related">
+  <h2>Related posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2021/01/04/Starting/">
+            Basics of CPU
+            <small>04 Jan 2021</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2021/01/03/introducing-lanyon/">
+            Introducing Lanyon
+            <small>03 Jan 2021</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2021/01/02/example-content/">
+            Example content
+            <small>02 Jan 2021</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script src='/public/js/script.js'></script>
+  </body>
+</html>

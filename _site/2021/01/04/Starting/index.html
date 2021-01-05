@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Basics of CPU &middot; My 30 Days of Hacking Challenge
+    
+  </title>
+
+  
+  <link rel="canonical" href="http://localhost:4000/2021/01/04/Starting/">
+  
+
+  <link rel="stylesheet" href="http://localhost:4000/public/css/poole.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/syntax.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/lanyon.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/public/pageIcon.png">
+  <link rel="shortcut icon" href="http://localhost:4000/public/pageIcon.ico">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="http://localhost:4000/atom.xml">
+
+  
+</head>
+
+
+  <body class="layout-reverse">
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox" >
+<!--  -->
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p>In these 30 days challenge, I will be covering a lot of fields and topics of hacking</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item" href="http://localhost:4000/">Home</a>
+
+    
+
+    
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="http://localhost:4000/about/">About</a>
+        
+      
+    
+      
+    
+      
+    
+
+    <a class="sidebar-nav-item" href="https://github.com/gyan3098/30DaysOfHackingChallenge/archive/main.zip">Download</a>
+    <a class="sidebar-nav-item" href="https://github.com/gyan3098/30DaysOfHackingChallenge">GitHub project</a>
+    <span class="sidebar-nav-item">Currently v1.1.0</span>
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; 2021. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">My 30 Days of Hacking Challenge</a>
+            <small>Hacking</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="post">
+  <h1 class="post-title">Basics of CPU</h1>
+  <span class="post-date">04 Jan 2021</span>
+  <h3 id="common-known-cpu-architectures">Common known CPU architectures</h3>
+<ul>
+  <li>32-bit(x-86)    // used on desktop and latptop</li>
+  <li>64-bit(x-64_86) // used on desktop and latptop</li>
+  <li>ARM   // used on mobile</li>
+  <li>MIPS  //used on embedded devices</li>
+</ul>
+
+<h3 id="registers">Registers</h3>
+<p><code class="language-plaintext highlighter-rouge">x86 family</code>
+8086, 80386(32-bit architecture, also called i386) and AMD’s Opteron(64-bit architecture).
+These CPUs are backward compatible like 32-bit binary can be executed on a 64-bit platform.</p>
+
+<h4 id="general-purpose-registers">General Purpose Registers</h4>
+<p><code class="language-plaintext highlighter-rouge">16-bit</code> Intel 8086 GPRs:-</p>
+<ul>
+  <li>Accumulator Register (AX)</li>
+  <li>Base Register (BX)</li>
+  <li>Counter Register (CX)</li>
+  <li>Data Register (DX)</li>
+  <li>Stack Pointer Register (SP)</li>
+  <li>Stack Base Pointer Register (BP)</li>
+  <li>Source Index Register (SI)</li>
+  <li>Destination Index Register (DI)</li>
+  <li>Instruction Pointer Register (IP)</li>
+</ul>
+<p class="message">
+AX = AH and AL <br />
+BX = BH and BL <br />
+CX = CH and CL <br />
+DX = DH and DL <br />
+</p>
+
+<p><code class="language-plaintext highlighter-rouge">32-bit</code> architecture GPRs:-
+<br />
+Here E stands for <em>Extended</em></p>
+<p class="message">
+EAX, EBX, ECX, EDX, ESP, EBP, ESI, EDI and EIP
+</p>
+
+<p><code class="language-plaintext highlighter-rouge">64-bit</code> architecture GPRs:-
+<br />
+Size of registers are twice tht of <code class="language-plaintext highlighter-rouge">32-bit</code>. Here R stands for <em>Register</em></p>
+<p class="message">
+RAX, RBX, RCX, RDX, RSP, RBP, RSI, RDI and RIP
+<br />
+R8, R9, R10, R11, R12, R13, R14 and R15
+</p>
+<p>Volatile Registers(values get lost when another function is called) :- R8, R9, R10 and R11
+<br />
+Values in the registers R12, R13, R14 and R15 are saved beore calling another function</p>
+
+<p><strong>Passing values</strong>
+8-bit, 16-bit and 32-bit uses stck to pass arguments to a function
+<br />
+In 64-bit variant, few arguments are stored in registers <em>(RCX, RDX, R8 and R9)</em> and remanining arguments are pushed on the stack.</p>
+
+<h4 id="segment-registers">Segment Registers</h4>
+<p>The purpose of these registers is to store the value of the segments of the binary which is being executed.
+Nowadays, these registers are not always used, the reason behind is that now the memory is not accessed <em>flat</em> but via <em>paging</em></p>
+
+<ul>
+  <li><em>Code Segment Register (CS)</em> :- contains the value of the code segment</li>
+  <li><em>Data Segment Register (DS)</em> :- contains the value of the data segment</li>
+  <li><em>Extra Segment Register (ES, FS nd GS)</em> :- these are filled with data from OS such s exception or thread handling</li>
+  <li><em>Stack Segment Register (SS)</em> :- contains the value of the stack segment</li>
+</ul>
+
+<h3 id="endianess">Endianess</h3>
+<h6 id="big-endian-">Big Endian \</h6>
+<p>The big end of the data is read first.
+ex:- abcd  // ascii value of a = 0x61, b = 0x62, c = 0x63, d = 0x64
+<br />
+So in Big Endian Notation (“abcd”) is written as <em>0x61626364</em> as a hexadecimal value.</p>
+<h6 id="little-endian-">Little Endian \</h6>
+<p>Reverse of Big Endian (least significant byte at lowest address) <br />
+So in Little Endian Notation (“abcd”) is written as
+<em>0x64636261</em> as a hexadecimal value.</p>
+
+<h5 id="flags">Flags</h5>
+<p>Flags are not much helpful except some in reverse engineering.</p>
+
+</div>
+
+
+<div class="related">
+  <h2>Related posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2021/01/04/radare2-cheats/">
+            Radare2-cheats
+            <small>04 Jan 2021</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2021/01/03/introducing-lanyon/">
+            Introducing Lanyon
+            <small>03 Jan 2021</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2021/01/02/example-content/">
+            Example content
+            <small>02 Jan 2021</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script src='/public/js/script.js'></script>
+  </body>
+</html>
