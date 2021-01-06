@@ -19,7 +19,8 @@ value of argv = ['arg1','arg2','arg3']
 When disassembling the binary with any of the reverse engineering tools(like, ghidra, radare2, cutter, gdb or any other). To get to a specific location of the array(here to know the value of second argument i.e. arg1, the compiler do the below works)
 
 The below is an example of
-![Understanding_argv](/public/understanding_argv.png)
+
+<img src="{{'/public/understanding_argv.png' | absolute_url}}" alt="understanding_argv"/>
 ```assembly
   ; start location of array is equal to the address of argv
   mov eax, dword[argv]  ;here address of *argv is being moved to eax.

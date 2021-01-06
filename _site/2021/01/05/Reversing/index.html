@@ -14,7 +14,7 @@
   </title>
 
   
-  <link rel="canonical" href="http://localhost:4000/2021/01/04/Reversing/">
+  <link rel="canonical" href="http://localhost:4000/2021/01/05/Reversing/">
   
 
   <link rel="stylesheet" href="http://localhost:4000/public/css/poole.css">
@@ -101,7 +101,7 @@
       <div class="container content">
         <div class="post">
   <h1 class="post-title">Basics of Reversing</h1>
-  <span class="post-date">04 Jan 2021</span>
+  <span class="post-date">05 Jan 2021</span>
   <h3 id="understanding-the-assembly-of-inline-arguments">Understanding the assembly of inline arguments</h3>
 <pre><code class="language-C">  int main(int argc, char **argv){ /* .....*/ }
   OR
@@ -116,8 +116,9 @@ value of argv = [‘arg1’,’arg2’,’arg3’]</p>
 
 <p>When disassembling the binary with any of the reverse engineering tools(like, ghidra, radare2, cutter, gdb or any other). To get to a specific location of the array(here to know the value of second argument i.e. arg1, the compiler do the below works)</p>
 
-<p>The below is an example of
-<img src="/public/understanding_argv.png" alt="Understanding_argv" /></p>
+<p>The below is an example of</p>
+
+<p><img src="http://localhost:4000/public/understanding_argv.png" alt="understanding_argv" /></p>
 <pre><code class="language-assembly">  ; start location of array is equal to the address of argv
   mov eax, dword[argv]  ;here address of *argv is being moved to eax.
   add eax, 4            ;to get to the second index of the array
