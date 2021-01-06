@@ -68,6 +68,10 @@
     
       
     
+      
+        
+      
+    
 
     <a class="sidebar-nav-item" href="https://github.com/gyan3098/30DaysOfHackingChallenge/archive/main.zip">Download</a>
     <a class="sidebar-nav-item" href="https://github.com/gyan3098/30DaysOfHackingChallenge">GitHub project</a>
@@ -676,6 +680,40 @@ So in Little Endian Notation (“abcd”) is written as
   
   <div class="post">
     <h1 class="post-title">
+      <a href="http://localhost:4000/2021/01/04/Reversing/">
+        Basics of Reversing
+      </a>
+    </h1>
+
+    <span class="post-date">04 Jan 2021</span>
+
+    <h3 id="understanding-the-assembly-of-inline-arguments">Understanding the assembly of inline arguments</h3>
+<pre><code class="language-C">  int main(int argc, char **argv){ /* .....*/ }
+  OR
+  int main(int argc, char *argv[]) { /* ... */ }
+</code></pre>
+<p>So <code class="language-plaintext highlighter-rouge">argc</code> means (ARGument Count) is int and stores number of command-line arguments passed by the user including the name of the program.
+And <code class="language-plaintext highlighter-rouge">argv</code> means (ARGument Vector) is array of character pointers listing all the arguments.</p>
+
+<p>Ex:- ./binary arg1 arg2 arg3<br />
+value of argc = 4 (3 values + 1 binary-name)<br />
+value of argv = [‘arg1’,’arg2’,’arg3’]</p>
+
+<p>When disassembling the binary with any of the reverse engineering tools(like, ghidra, radare2, cutter, gdb or any other). To get to a specific location of the array(here to know the value of second argument i.e. arg1, the compiler do the below works)</p>
+
+<p>The below is an example of
+<img src="/public/understanding_argv.png" alt="Understanding_argv" /></p>
+<pre><code class="language-assembly">  ; start location of array is equal to the address of argv
+  mov eax, dword[argv]  ;here address of *argv is being moved to eax.
+  add eax, 4            ;to get to the second index of the array
+</code></pre>
+
+<p>https://maxkersten.nl/binary-analysis-course/introduction/secura-grand-slam-ctf-easy-reverse/</p>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
       <a href="http://localhost:4000/2021/01/03/introducing-lanyon/">
         Introducing Lanyon
       </a>
@@ -860,32 +898,11 @@ So in Little Endian Notation (“abcd”) is written as
 
   </div>
   
-  <div class="post">
-    <h1 class="post-title">
-      <a href="http://localhost:4000/2021/01/01/whats-jekyll/">
-        What's Jekyll?
-      </a>
-    </h1>
-
-    <span class="post-date">01 Jan 2021</span>
-
-    <p><a href="https://jekyllrb.com">Jekyll</a> is a static site generator, an open-source tool for creating simple yet powerful websites of all shapes and sizes. From <a href="https://github.com/mojombo/jekyll/blob/master/README.markdown">the project’s readme</a>:</p>
-
-<blockquote>
-  <p>Jekyll is a simple, blog aware, static site generator. It takes a template directory […] and spits out a complete, static website suitable for serving with Apache or your favorite web server. This is also the engine behind GitHub Pages, which you can use to host your project’s page or blog right here from GitHub.</p>
-</blockquote>
-
-<p>It’s an immensely useful tool and one we encourage you to use here with Lanyon.</p>
-
-<p>Find out more by <a href="https://github.com/mojombo/jekyll">visiting the project on GitHub</a>.</p>
-
-  </div>
-  
 </div>
 
 <div class="pagination">
   
-    <span class="pagination-item older">Older</span>
+    <a class="pagination-item older" href="http://localhost:4000/page2">Older</a>
   
   
     <span class="pagination-item newer">Newer</span>

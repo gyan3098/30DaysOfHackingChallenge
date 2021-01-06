@@ -4,7 +4,7 @@
  <title>My 30 Days of Hacking Challenge</title>
  <link href="http://localhost:4000/atom.xml" rel="self"/>
  <link href="http://localhost:4000/"/>
- <updated>2021-01-05T17:26:16+05:30</updated>
+ <updated>2021-01-06T16:32:12+05:30</updated>
  <id>http://localhost:4000</id>
  <author>
    <name>Gyan Ranjan</name>
@@ -578,6 +578,36 @@ So in Little Endian Notation (“abcd”) is written as
 
 &lt;h5 id=&quot;flags&quot;&gt;Flags&lt;/h5&gt;
 &lt;p&gt;Flags are not much helpful except some in reverse engineering.&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Basics of Reversing</title>
+   <link href="http://localhost:4000/2021/01/04/Reversing/"/>
+   <updated>2021-01-04T00:00:00+05:30</updated>
+   <id>http://localhost:4000/2021/01/04/Reversing</id>
+   <content type="html">&lt;h3 id=&quot;understanding-the-assembly-of-inline-arguments&quot;&gt;Understanding the assembly of inline arguments&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&quot;language-C&quot;&gt;  int main(int argc, char **argv){ /* .....*/ }
+  OR
+  int main(int argc, char *argv[]) { /* ... */ }
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;So &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;argc&lt;/code&gt; means (ARGument Count) is int and stores number of command-line arguments passed by the user including the name of the program.
+And &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;argv&lt;/code&gt; means (ARGument Vector) is array of character pointers listing all the arguments.&lt;/p&gt;
+
+&lt;p&gt;Ex:- ./binary arg1 arg2 arg3&lt;br /&gt;
+value of argc = 4 (3 values + 1 binary-name)&lt;br /&gt;
+value of argv = [‘arg1’,’arg2’,’arg3’]&lt;/p&gt;
+
+&lt;p&gt;When disassembling the binary with any of the reverse engineering tools(like, ghidra, radare2, cutter, gdb or any other). To get to a specific location of the array(here to know the value of second argument i.e. arg1, the compiler do the below works)&lt;/p&gt;
+
+&lt;p&gt;The below is an example of
+&lt;img src=&quot;/public/understanding_argv.png&quot; alt=&quot;Understanding_argv&quot; /&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-assembly&quot;&gt;  ; start location of array is equal to the address of argv
+  mov eax, dword[argv]  ;here address of *argv is being moved to eax.
+  add eax, 4            ;to get to the second index of the array
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;https://maxkersten.nl/binary-analysis-course/introduction/secura-grand-slam-ctf-easy-reverse/&lt;/p&gt;
 </content>
  </entry>
  

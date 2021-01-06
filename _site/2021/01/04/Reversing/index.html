@@ -9,12 +9,12 @@
 
   <title>
     
-      About &middot; My 30 Days of Hacking Challenge
+      Basics of Reversing &middot; My 30 Days of Hacking Challenge
     
   </title>
 
   
-  <link rel="canonical" href="http://localhost:4000/about/">
+  <link rel="canonical" href="http://localhost:4000/2021/01/04/Reversing/">
   
 
   <link rel="stylesheet" href="http://localhost:4000/public/css/poole.css">
@@ -60,7 +60,7 @@
     
       
         
-          <a class="sidebar-nav-item active" href="http://localhost:4000/about/">About</a>
+          <a class="sidebar-nav-item" href="http://localhost:4000/about/">About</a>
         
       
     
@@ -99,13 +99,69 @@
       </div>
 
       <div class="container content">
-        <div class="page">
-  <h1 class="page-title">About</h1>
-  <p class="message">
-  Hey there! This page is included as an example. Feel free to customize it for your own use upon downloading. Carry on!
-</p>
+        <div class="post">
+  <h1 class="post-title">Basics of Reversing</h1>
+  <span class="post-date">04 Jan 2021</span>
+  <h3 id="understanding-the-assembly-of-inline-arguments">Understanding the assembly of inline arguments</h3>
+<pre><code class="language-C">  int main(int argc, char **argv){ /* .....*/ }
+  OR
+  int main(int argc, char *argv[]) { /* ... */ }
+</code></pre>
+<p>So <code class="language-plaintext highlighter-rouge">argc</code> means (ARGument Count) is int and stores number of command-line arguments passed by the user including the name of the program.
+And <code class="language-plaintext highlighter-rouge">argv</code> means (ARGument Vector) is array of character pointers listing all the arguments.</p>
+
+<p>Ex:- ./binary arg1 arg2 arg3<br />
+value of argc = 4 (3 values + 1 binary-name)<br />
+value of argv = [‘arg1’,’arg2’,’arg3’]</p>
+
+<p>When disassembling the binary with any of the reverse engineering tools(like, ghidra, radare2, cutter, gdb or any other). To get to a specific location of the array(here to know the value of second argument i.e. arg1, the compiler do the below works)</p>
+
+<p>The below is an example of
+<img src="/public/understanding_argv.png" alt="Understanding_argv" /></p>
+<pre><code class="language-assembly">  ; start location of array is equal to the address of argv
+  mov eax, dword[argv]  ;here address of *argv is being moved to eax.
+  add eax, 4            ;to get to the second index of the array
+</code></pre>
+
+<p>https://maxkersten.nl/binary-analysis-course/introduction/secura-grand-slam-ctf-easy-reverse/</p>
 
 </div>
+
+
+<div class="related">
+  <h2>Related posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2021/01/04/radare2-cheats/">
+            Radare2-cheats
+            <small>04 Jan 2021</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2021/01/04/Starting/">
+            Basics of CPU
+            <small>04 Jan 2021</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2021/01/03/introducing-lanyon/">
+            Introducing Lanyon
+            <small>03 Jan 2021</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
 
       </div>
     </div>
