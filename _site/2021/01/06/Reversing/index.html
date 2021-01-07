@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Basics of Reversing &middot; My 30 Days of Hacking Challenge
+    
+  </title>
+
+  
+  <link rel="canonical" href="http://localhost:4000/2021/01/06/Reversing/">
+  
+
+  <link rel="stylesheet" href="http://localhost:4000/public/css/poole.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/syntax.css">
+  <link rel="stylesheet" href="http://localhost:4000/public/css/lanyon.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://localhost:4000/public/pageIcon.png">
+  <link rel="shortcut icon" href="http://localhost:4000/public/pageIcon.ico">
+
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="http://localhost:4000/atom.xml">
+
+  
+</head>
+
+
+  <body class="layout-reverse">
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox" >
+<!--  -->
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p>In these 30 days challenge, I will be covering a lot of fields and topics of hacking</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item" href="http://localhost:4000/">Home</a>
+
+    
+
+    
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="http://localhost:4000/Radare2-cheats/">Radare2-cheats</a>
+        
+      
+    
+      
+        
+          <a class="sidebar-nav-item" href="http://localhost:4000/about/">About</a>
+        
+      
+    
+      
+    
+      
+    
+      
+        
+      
+    
+
+    <a class="sidebar-nav-item" href="https://github.com/gyan3098/30DaysOfHackingChallenge/archive/main.zip">Download</a>
+    <a class="sidebar-nav-item" href="https://github.com/gyan3098/30DaysOfHackingChallenge">GitHub project</a>
+    <span class="sidebar-nav-item">Currently v1.1.0</span>
+  </nav>
+
+  <div class="sidebar-item">
+    <p>
+      &copy; 2021. All rights reserved.
+    </p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">My 30 Days of Hacking Challenge</a>
+            <small>Hacking</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="post">
+  <h1 class="post-title">Basics of Reversing</h1>
+  <span class="post-date">06 Jan 2021</span>
+  <h3 id="understanding-the-assembly-of-inline-arguments">Understanding the assembly of inline arguments</h3>
+<pre><code class="language-C">  int main(int argc, char **argv){ /* .....*/ }
+  OR
+  int main(int argc, char *argv[]) { /* ... */ }
+</code></pre>
+<p>So <code class="language-plaintext highlighter-rouge">argc</code> means (ARGument Count) is int and stores number of command-line arguments passed by the user including the name of the program.
+And <code class="language-plaintext highlighter-rouge">argv</code> means (ARGument Vector) is array of character pointers listing all the arguments.</p>
+
+<p>Ex:- ./binary arg1 arg2 arg3<br />
+value of argc = 4 (3 values + 1 binary-name)<br />
+value of argv = [‘arg1’, ‘arg2’, ‘arg3’]</p>
+
+<p>When disassembling the binary with any of the reverse engineering tools(like, ghidra, radare2, cutter, gdb or any other). To get to a specific location of the array(here to know the value of second argument i.e. arg1, the compiler do the below works)</p>
+
+<p>The below is an example of</p>
+
+<p><img src="http://localhost:4000/public/understanding_argv.png" alt="understanding_argv" /></p>
+
+<p>Let me explain it in easy way <br />
+int main(int argc, char **argv){/* … */}</p>
+
+<p>When running the program<br />
+-&gt; ./easy abcd</p>
+
+<p>so, argv[0] = ‘easy’<br />
+and argv[1] = ‘abcd’</p>
+
+<p>To get value of <code class="language-plaintext highlighter-rouge">argv[1]</code> to the <code class="language-plaintext highlighter-rouge">eax</code> register, assembler do the following operations.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  mov eax, dword[argv]
+  add eax, 4
+  mov eax, dword[eax]      
+</code></pre></div></div>
+<p>So, Let me explain this to you, first line moves the address of <code class="language-plaintext highlighter-rouge">argv</code> to <code class="language-plaintext highlighter-rouge">eax</code> i.e. address of <code class="language-plaintext highlighter-rouge">argv[0]</code> {since address of first index of array = starting address of array}. <br />
+Second line increments the value of <code class="language-plaintext highlighter-rouge">eax</code> by 4, so now it points to the address of <code class="language-plaintext highlighter-rouge">argv[1]</code>.<br />
+Now, address of <code class="language-plaintext highlighter-rouge">argv[1]</code> is stored in <code class="language-plaintext highlighter-rouge">eax</code>, third line moves the contents of value at the memory location of <code class="language-plaintext highlighter-rouge">eax</code> to <code class="language-plaintext highlighter-rouge">eax</code>. Here <code class="language-plaintext highlighter-rouge">dword[eax]</code> has the value of <code class="language-plaintext highlighter-rouge">argv[1]</code>. So now <code class="language-plaintext highlighter-rouge">eax</code> has the value 0x64636261.</p>
+
+<p><a href="https://maxkersten.nl/binary-analysis-course/introduction/secura-grand-slam-ctf-easy-reverse/">Reference link to understand above with an example</a></p>
+
+</div>
+
+
+<div class="related">
+  <h2>Related posts</h2>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2021/01/07/SomeBasicsOfBinary/">
+            Binary
+            <small>07 Jan 2021</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2021/01/06/Assembly-Basics/">
+            Assembly Basics
+            <small>06 Jan 2021</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2021/01/05/Starting/">
+            Basics of CPU
+            <small>05 Jan 2021</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script src='/public/js/script.js'></script>
+  </body>
+</html>

@@ -4,7 +4,7 @@
  <title>My 30 Days of Hacking Challenge</title>
  <link href="http://localhost:4000/atom.xml" rel="self"/>
  <link href="http://localhost:4000/"/>
- <updated>2021-01-06T17:36:33+05:30</updated>
+ <updated>2021-01-07T09:57:46+05:30</updated>
  <id>http://localhost:4000</id>
  <author>
    <name>Gyan Ranjan</name>
@@ -13,10 +13,19 @@
 
  
  <entry>
+   <title>Binary</title>
+   <link href="http://localhost:4000/2021/01/07/SomeBasicsOfBinary/"/>
+   <updated>2021-01-07T00:00:00+05:30</updated>
+   <id>http://localhost:4000/2021/01/07/SomeBasicsOfBinary</id>
+   <content type="html">&lt;p&gt;Some binary Basics&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
    <title>Basics of Reversing</title>
-   <link href="http://localhost:4000/2021/01/05/Reversing/"/>
-   <updated>2021-01-05T00:00:00+05:30</updated>
-   <id>http://localhost:4000/2021/01/05/Reversing</id>
+   <link href="http://localhost:4000/2021/01/06/Reversing/"/>
+   <updated>2021-01-06T00:00:00+05:30</updated>
+   <id>http://localhost:4000/2021/01/06/Reversing</id>
    <content type="html">&lt;h3 id=&quot;understanding-the-assembly-of-inline-arguments&quot;&gt;Understanding the assembly of inline arguments&lt;/h3&gt;
 &lt;pre&gt;&lt;code class=&quot;language-C&quot;&gt;  int main(int argc, char **argv){ /* .....*/ }
   OR
@@ -27,507 +36,50 @@ And &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;argv&lt;/
 
 &lt;p&gt;Ex:- ./binary arg1 arg2 arg3&lt;br /&gt;
 value of argc = 4 (3 values + 1 binary-name)&lt;br /&gt;
-value of argv = [‘arg1’,’arg2’,’arg3’]&lt;/p&gt;
+value of argv = [‘arg1’, ‘arg2’, ‘arg3’]&lt;/p&gt;
 
 &lt;p&gt;When disassembling the binary with any of the reverse engineering tools(like, ghidra, radare2, cutter, gdb or any other). To get to a specific location of the array(here to know the value of second argument i.e. arg1, the compiler do the below works)&lt;/p&gt;
 
 &lt;p&gt;The below is an example of&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;http://localhost:4000/public/understanding_argv.png&quot; alt=&quot;understanding_argv&quot; /&gt;&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-assembly&quot;&gt;  ; start location of array is equal to the address of argv
-  mov eax, dword[argv]  ;here address of *argv is being moved to eax.
-  add eax, 4            ;to get to the second index of the array
-&lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;https://maxkersten.nl/binary-analysis-course/introduction/secura-grand-slam-ctf-easy-reverse/&lt;/p&gt;
+&lt;p&gt;Let me explain it in easy way &lt;br /&gt;
+int main(int argc, char **argv){/* … */}&lt;/p&gt;
+
+&lt;p&gt;When running the program&lt;br /&gt;
+-&amp;gt; ./easy abcd&lt;/p&gt;
+
+&lt;p&gt;so, argv[0] = ‘easy’&lt;br /&gt;
+and argv[1] = ‘abcd’&lt;/p&gt;
+
+&lt;p&gt;To get value of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;argv[1]&lt;/code&gt; to the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;eax&lt;/code&gt; register, assembler do the following operations.&lt;/p&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  mov eax, dword[argv]
+  add eax, 4
+  mov eax, dword[eax]      
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;So, Let me explain this to you, first line moves the address of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;argv&lt;/code&gt; to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;eax&lt;/code&gt; i.e. address of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;argv[0]&lt;/code&gt; {since address of first index of array = starting address of array}. &lt;br /&gt;
+Second line increments the value of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;eax&lt;/code&gt; by 4, so now it points to the address of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;argv[1]&lt;/code&gt;.&lt;br /&gt;
+Now, address of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;argv[1]&lt;/code&gt; is stored in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;eax&lt;/code&gt;, third line moves the contents of value at the memory location of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;eax&lt;/code&gt; to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;eax&lt;/code&gt;. Here &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;dword[eax]&lt;/code&gt; has the value of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;argv[1]&lt;/code&gt;. So now &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;eax&lt;/code&gt; has the value 0x64636261.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://maxkersten.nl/binary-analysis-course/introduction/secura-grand-slam-ctf-easy-reverse/&quot;&gt;Reference link to understand above with an example&lt;/a&gt;&lt;/p&gt;
 </content>
  </entry>
  
  <entry>
-   <title>Radare2-cheats</title>
-   <link href="http://localhost:4000/2021/01/04/radare2-cheats/"/>
-   <updated>2021-01-04T00:00:00+05:30</updated>
-   <id>http://localhost:4000/2021/01/04/radare2-cheats</id>
-   <content type="html">&lt;p&gt;r2 has an embedded webserver and ships some	basic user interfaces written in html/js.
-$ r2 -c=H &lt;binary_file_name&gt;&lt;/binary_file_name&gt;&lt;/p&gt;
-
-&lt;p&gt;‘seek’ command is abbreviated as ‘s’&lt;br /&gt;
-ex:-&lt;br /&gt;
-	[0x000000]&amp;gt; s + 10 &lt;br /&gt;
-	[0x000000]&amp;gt; s +0x25&lt;br /&gt;
-	[0x000000]&amp;gt; s + [0x100+ptr_table]&lt;/p&gt;
-
-&lt;p&gt;[0x000000]&amp;gt; s++		:- seek forward&lt;br /&gt;
-[0x000000]&amp;gt; s–		:- seek backward&lt;/p&gt;
-
-&lt;p&gt;‘print’ alias as ‘p’ &amp;lt;- it takes number of submodes - the 2nd letter secifying a desired mode.&lt;/p&gt;
-
-&lt;p&gt;ex:-
-	[0x000000]&amp;gt; px :- to print in hexadecimal&lt;br /&gt;
-	[0x000000]&amp;gt; pd :- for disassembling&lt;/p&gt;
-
-&lt;p&gt;to be allowed to write files (-w) option to r2 when opening a file.(‘x’ subcommand for hexpairs),(‘a’ subcommand for even assembly opcodes)
-ex :-
-	[0x000000]&amp;gt; w hello world		:- string
-	[0x000000]&amp;gt; wx 90 90 90 90	:- hexpairs
-	[0x000000]&amp;gt; wa jmp 0x808140	:-	assemble&lt;br /&gt;
-	[0x000000]&amp;gt; wf inline.bin 		:- write contents of file&lt;/p&gt;
-
-&lt;p&gt;append ‘?’ to a command will show its help message&lt;br /&gt;
-ex:-&lt;br /&gt;
-	[0x000000]&amp;gt; a? 		:- will show all commands starting with a&lt;/p&gt;
-
-&lt;p&gt;[0x000000]&amp;gt; VV		:- To enter block Visual  mode&lt;br /&gt;
-[0x000000]&amp;gt; q 		:- To exit block Visual mode&lt;br /&gt;
-in visual mode we can use HJKL keys to navigate(left,down,up,right ,respectively)&lt;/p&gt;
-
-&lt;p&gt;cursor mode :- toggled by ‘c’ key
-in toggle mode we can arrange the alignment of the code&lt;/p&gt;
-
-&lt;p&gt;$ ‘TAB’ 		:- to toggle between differnt parts of the code(blue border shows on which block you are)&lt;/p&gt;
-
-&lt;p&gt;To enter Visual  mode(hex representation) :- $ V
-To exit block Visual mode :- $ q
-in visual mode we can use HJKL keys to navigate(left,down,up,right ,respectively)
-To overwrite the bytes:-
-	$ i
-‘TAB’:- To switch between the hex(middle) and string(right) columns&lt;/p&gt;
-
-&lt;p&gt;to scroll different visual mode representation:-
-	$ p or P&lt;/p&gt;
-
-&lt;hr /&gt;
-&lt;p&gt;MOST IMPORTANT VISUAL MODE  curses-like panels interfaces:-
-	$ V!&lt;/p&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;'F7' or 's' :- step into current instruction
-'F8' or 'S' :- step over current instruction
-'F2'		:- to set breakpoints
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;This mode contains many options on the top.You can use it like an application
-and navigate to different part of code&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;cursor mode :- toggled by ‘c’ key
-to select a byte range in cursor mode :- SHIFT + H
-										 SHIFT + J
-										 SHIFT + K
-										 SHIFT + L&lt;/p&gt;
-
-&lt;hr /&gt;
-&lt;p&gt;Important command line options
-——————————-
--A 				:- run ‘aaa’ command to analyze all referenced code
--B [addr] 		:- set base address for PIE binaries
--c ‘cmd..’ 		:- execute radare command
--C 				:- file is host:port(alias for -c=https://%s/cmd/)
--d 				:- debug the executable ‘file’ for running ‘pid’
--D [backend]	:- enable debug mode
--H ([var])		:- display variable
--K [OS/kern]	:- set asm.os (linux,macos,w32,netbsd,…)
--m [addr]		:- map file at given address(loadaddr)
--M 				:- do not demangle symbol names
--p [prj]		:- use project ,list if no arg,load if no file
--P [file]		:- apply repatch file and quit
--s [addr]		:- initial seek
--w 				:- open file in write mode&lt;/p&gt;
-
-&lt;hr /&gt;
-&lt;p&gt;Common usage patterns
-——————————–
-Open a file in write mode without parsing the file format headers
-$ r2 -nw file&lt;/p&gt;
-
-&lt;p&gt;Quickly get into an r2 shell without opening any file
-$ r2 -&lt;/p&gt;
-
-&lt;p&gt;Set the configuration variable
-$ r2 -e scr.color=0 blah.bin&lt;/p&gt;
-
-&lt;p&gt;Use an existing project file
-$ r2 -p test&lt;/p&gt;
-
-&lt;hr /&gt;
-&lt;p&gt;Command Format
-———————————–
-general format
-[.][times][cmd][~grep][@[@iter]addr!size][|&amp;gt;pipe]	;&lt;/p&gt;
-
-&lt;p&gt;to repeatedly execute a command,prefix the command with a number
-px 		#run px
-3px		#run px 3 times&lt;/p&gt;
-
-&lt;p&gt;To execute a command in shell context  :- prefix  ‘!’
-To use the cmd callback from the I/O plugin :- prrfix with ‘=!’&lt;/p&gt;
-
-&lt;p&gt;ex:-
-	$ ds 					:- call the debugger’s ‘step’ command
-	$ px 200 @ esp 			:- show 200 hex bytes at esp
-	$ pc &amp;gt; file.c 			:- dump buffer as a C byte array to file.c
-	$ wx 90 @@ sym.*		:- write a nop on every symbol
-	$ pd 2000 | grep eax 	:-	grep opcodes that use the ‘eax’ register
-	$ px 20 ; pd 3 ; px 40 	:- multiple commands in a single line&lt;/p&gt;
-
-&lt;p&gt;pipe (‘|’) is available in r2 shell
-can be used to filter the output with commands like wc,grep,less&lt;/p&gt;
-
-&lt;p&gt;there is also built-in grep(~)&lt;/p&gt;
-
-&lt;p&gt;$ ~? 		:- for help
-‘~’ character enables internal grep-like function used to filter output of any command&lt;/p&gt;
-
-&lt;p&gt;ex:-
-	pd 20~call 		:- disassemble 20 instructions and grep output for ‘call’
-	pd 20~call:0	:- get first row
-	pd 20~call:1	:- get second row
-	pd 20~call[0]	:- get first column
-	pd 20~call[1]	:- get second column
-	pd 20~call:0[0]	:- grep the fist column of the first row matching ‘call’&lt;/p&gt;
-
-&lt;p&gt;’@’ character is used to specify a temporary offset at which command to its left will be executed&lt;/p&gt;
-
-&lt;p&gt;ex:-
-	$ pd  @ 0x100000fce		:- to disasemble 5 instructions at address 0x10000fce&lt;/p&gt;
-
-&lt;p&gt;$ !~…	:-to see the history&lt;/p&gt;
-
-&lt;hr /&gt;
-&lt;p&gt;EXPRESSIONS
-——————————–
-to evaluate mathematical expressions pretend them with command ‘?’&lt;/p&gt;
-
-&lt;p&gt;[0xb7f9d810]&amp;gt;	?vi	0x8048000
-134512640
-[0xv7f9d810]&amp;gt;	?vi	0x8048000+34
-134512674
-[0xb7f9d810]&amp;gt;	?vi	0x8048000+0x34
-134512692
-[0xb7f9d810]&amp;gt;	?	1+2+3-4*3
-hex					0xfffffffffffffffa
-octal			01777777777777777777772
-unit				17179869184.0G
-segment	fffff000:0ffa
-int64			-6
-string		“\xfa\xff\xff\xff\xff\xff\xff\xff”
-binary		0b1111111111111111111111111111111111111111111111111111111111111010 fvalue:	-6.0
-float:		nanf
-double:	nan
-trits			0t11112220022122120101211020120210210211201&lt;/p&gt;
-
-&lt;p&gt;supporte arithmetic:-
-‘+’,’-‘,’*’,’/’,’%’
-‘&amp;gt;’		:- shift right
-‘&amp;lt;’		:- shift left&lt;/p&gt;
-
-&lt;p&gt;To use of logical OR , quote the whole comman to avoid executing | pipe:
-ex:-
-	$ “? 1 | 2”&lt;/p&gt;
-
-&lt;p&gt;$ $$	:- here(the current virtual seek)
-$ $1	:- opcode length
-$ $s 	:- file size
-$ $j 	:- jump address(e.g. jmp 0x10)
-$ $f 	:- jump fail address (e.g. jz 0x10 =&amp;gt; next instruction)
-$ $m 	:- opcode memory reference(e.g. mov eax,[0x10] =&amp;gt; 0x10)
-$ $b 	:- block size&lt;/p&gt;
-
-&lt;p&gt;ex:-
-	[0x4A13B8C0]&amp;gt;	pd	1	@	+$l
-	0x4A13B8C2			call	0x4a13c000&lt;/p&gt;
-
-&lt;hr /&gt;
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Basic Debugger Session ------------------------------------------------ To debug a program ,start with '-d' option $ pidof &amp;lt;binaryname&amp;gt;		:- to know the process id of binary 32220 $r2 -d 32220 			:- to attach to that process
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;$ r2 -d &lt;binaryname&gt;	:- to attach r2 directly to the binary(in debug mode)&lt;/binaryname&gt;&lt;/p&gt;
-
-&lt;p&gt;$ r2 -a arm -b 16 -d gdb://192.168.1.43:9090&lt;/p&gt;
-
-&lt;p&gt;To continue program until a specific address is reached
-‘dcu’ (debug continue until) takes the address of the placee to stop at
-$ dcu main&lt;/p&gt;
-
-&lt;p&gt;Common commands used with debugger:-
-$ ds 3			:- step 3 times
-$ db 0x8048920	:- setup a breakpoint
-$ db -0x8048920 :- remove a breakpoint
-$ dc 			:- continue process execution
-$ dcs 			:- continue until syscall
-$ dd 			:- manipulate file descriptors
-$ dm 			:- show process maps
-$ dmp A S rwx	:- change permissions of page at A and size S
-$ dr eax=33		:- set register value, eax = 33&lt;/p&gt;
-
-&lt;p&gt;To enter visual debugger mode use ‘Vpp’:
-[0xb7f0c8c0]&amp;gt;	Vpp&lt;/p&gt;
-
-&lt;p&gt;Pressing ‘p’ will allow you to cycle through the rest of visual mode views
-‘F7’ or ‘s’ :- step into current instruction
-‘F8’ or ‘S’ :- step over current instruction
-‘c’			:- to toggle the cursor mode
-‘F2’		:- to set breakpoints&lt;/p&gt;
-
-&lt;p&gt;To see value of variable and its location
-$ .afvd &lt;variablename&gt;	:- to see value of variable
-$ afvd		 			:- to see value of all variables of that function&lt;/variablename&gt;&lt;/p&gt;
-
-&lt;p&gt;In visual mode we can enter regular radare commands by prepending them with
-‘:’ .
-ex:-
-	&amp;lt;Press ‘:’&amp;gt;
-	x @ esi&lt;/p&gt;
-
-&lt;p&gt;To get help on visual mode&lt;/p&gt;
-
-&lt;p&gt;Most strings are zero terminated.When we recover the control over the process,we get the arguments passed to syscall,pointed by %ebx.&lt;/p&gt;
-
-&lt;p&gt;[0x000000]&amp;gt; dcs open 		:- to continue the execution of a program until it executes the ‘open’ syscall&lt;/p&gt;
-
-&lt;p&gt;[0x000000]&amp;gt; dr
-eax		0xffffffda		esi		0xffffffff	eip		0x4a14fc24
-ebx		0x4a151c91		edi		0x4a151be1	oeax	0x00000005
-ecx		0x00000000		esp		0xbfbedb1c	eflags	0x200246		
-edx		0x00000000		ebp		0xbfbedbb0	cPaZstIdor0	(PZI)&lt;/p&gt;
-
-&lt;p&gt;[0x000000]&amp;gt;	psz	@	0x4a151c91
-/etc/ld.so.cache&lt;/p&gt;
-
-&lt;hr /&gt;
-&lt;p&gt;Print memory contents
-—————————–
-[0x000000]&amp;gt; pf ‘format memory string’ @ ‘address’
-ex:-
-	[0x000000]&amp;gt; pf xxS @ rsp&lt;/p&gt;
-
-&lt;hr /&gt;
-&lt;p&gt;Disassembly
-————-
-[0x000000]&amp;gt; pd 1		:- 	To disassemble code, it accepts a numeric value to specify how many instructions should be disassembled&lt;/p&gt;
-
-&lt;p&gt;[0x000000]&amp;gt; pD 	0x16	:- same as ‘pd’ but it takes a given number of bytes&lt;/p&gt;
-
-&lt;hr /&gt;
-&lt;p&gt;Disassembly Syntax
-——————–
-[0x000000]&amp;gt; e asm.arch=?? 			:- to list all the available architecture
-[0x000000]&amp;gt; e asm.arch=dalvik		:- to set the architecture flavor for the disassembler&lt;/p&gt;
-
-&lt;p&gt;[0x000000]&amp;gt; e asm.syntax = intel 	:- to set the flavor of the assembly syntax used by a disassembler engine&lt;/p&gt;
-
-&lt;hr /&gt;
-&lt;p&gt;XREF
-—–
-When r2 has discovered a XREF during the analysis, it will show you the information in the Visual Disassembly using ‘XREF’ tag:&lt;/p&gt;
-
-&lt;p&gt;;DATA XREF from 0x00402e0e (unk)
-str.David_Mackenzie:&lt;/p&gt;
-
-&lt;p&gt;To see where this string is called, press ‘x’,if you want to the location where data is used then pressng the corresponding number [0-9] on your keyboard
-‘X’ corresponds to the reverse operation aka ‘axf’&lt;/p&gt;
-
-&lt;p&gt;To enable this view use this config var ‘e dbg.funcarg = true’&lt;/p&gt;
-
-&lt;hr /&gt;
-&lt;p&gt;Visual Ascii Art Panels
-————————-
-$ | 	:- split the current panel vertically
-$ - 	:- split the current panel horizontally
-$ * 	:- show pseudo code/r2dec in the current panel
-$ : 	:- run r2 commands in prompt
-$ G 	:- show graph in the current panel
-$ m 	:- select the menu pannel
-$ sS 	:- step in /step over
-$ t 	:- rotate related commands in a panel
-$ w 	:- start window mode
-$ X 	:- close current panel
-$ z 	:- swap current panel with the first one&lt;/p&gt;
-
-&lt;p&gt;Search is initiated by ‘/’ command
-[0x000000]&amp;gt; /?		:- for help&lt;/p&gt;
-
-&lt;p&gt;r2 generates a “hit” flag for every entry found. We can then use the ‘ps’
-commands to see the strings stored at the offsets marked by the flags in this group,and they will have names of the form ‘hit0_&lt;index&gt;'.&lt;/index&gt;&lt;/p&gt;
-
-&lt;p&gt;[0x000000]&amp;gt; ps @ hit0_0&lt;/p&gt;
-
-&lt;p&gt;[0x000000]&amp;gt; /w Hello 		:- to search for wide-char strings(use ‘/w’ command)&lt;/p&gt;
-
-&lt;p&gt;[0x000000]&amp;gt; /i Stallman 	:- to perform a case-insensitive search for strings&lt;/p&gt;
-
-&lt;p&gt;[0x000000]&amp;gt; /x 7f454c46 	:- to search for hexadecimal values&lt;/p&gt;
-
-&lt;p&gt;[0x000000]&amp;gt; f 				:- To see the hits&lt;/p&gt;
-
-&lt;p&gt;[0x000000]&amp;gt; f- hit* 		:- to remove all hit flags
-[0x000000]&amp;gt;  //				:- repeat last search&lt;/p&gt;
-
-&lt;hr /&gt;
-&lt;p&gt;Configuring search options
-—————————
-[0x000000]&amp;gt; e search.from = 0		:- start address
-[0x000000]&amp;gt; e search.to = 0			:- end address
-[0x000000]&amp;gt; e search.flags = true 	:- if enabled, create flags on hits&lt;/p&gt;
-
-&lt;hr /&gt;
-&lt;p&gt;Search automation
-——————————
-‘cmd.hit’ configuration variable is used to define a r2 command to be executed when a matching entry is found by the search engine
-to run several commands,separate them with ‘;’
-[0x000000]&amp;gt; e cmd.hit = p8 8
-[0x000000]&amp;gt; / lib&lt;/p&gt;
-
-&lt;p&gt;[0x000000]&amp;gt; /b gyan		:- to search the string backwards
-‘/b’ is doing same as ‘/’ but backward ,so everything that applies for ‘/’ can be used with ‘/b’.
-[0x000000]&amp;gt; /bx 90 		:- to seach hex 90 backward&lt;/p&gt;
-
-&lt;p&gt;[0x000000]&amp;gt; e asm.pseudo = true 	:- to enable pseudo syntax
-[0x000000]&amp;gt; asm.pseudo 	:- experimental pseudocode view&lt;/p&gt;
-
-&lt;p&gt;To add the comment to a particular line/addres we can use ‘Ca’ command
-[0x00000000]&amp;gt; CCa 0x0000002	this guy seems legit&lt;/p&gt;
-
-&lt;hr /&gt;
-&lt;p&gt;Recursive analysis
- —————————
- [0x000000]&amp;gt; aab 	:- perform basic-block analysis
- [0x000000]&amp;gt; aac 	:- analyze function calls from one
- [0x000000]&amp;gt; aaf 	:- analyze all function calls
- [0x000000]&amp;gt; aar 	:- analyze data references
- [0x000000]&amp;gt; aad 	:- analyze pointers to pointers references&lt;/p&gt;
-
-&lt;p&gt;[0x000000]&amp;gt; axt [addr] 	:- find data/code references to this address
-[0x000000]&amp;gt; axf [addr] 	:- find data/code references from this address&lt;/p&gt;
-
-&lt;hr /&gt;
-&lt;p&gt;Managing variables
-——————————–
-the main variables commands are located in ‘afv’ namespace:
-[0x000000]&amp;gt; afvR [varname]	:- list addresses where vars are accessed (READ)
-[0x000000]&amp;gt; afvW [varname] 	:- list addresses where vars are accessed (WRITE)
-[0x000000]&amp;gt; afva 			:- analyze function arguments/locals
-[0x000000]&amp;gt; afvd name 		:- output r2 command for displaying the value of args/locals in the debugger
-[0x000000]&amp;gt; afvb[?] 		:- manipulate bp based arguments/locals
-[0x000000]&amp;gt;afvs[?]			:- manipulate sp based arguments/locals&lt;/p&gt;
-
-&lt;p&gt;We can rename variable affecting all places it was referenced
-[0x000000]&amp;gt; afvn [old_name] [new_name]	:- rename argument/local
-[0x000000]&amp;gt; afv- 						:- to simply remove the variable or argument&lt;/p&gt;
-
-&lt;p&gt;‘afvt’ which allows you to change the type of variable
-[0x000000]&amp;gt; afvt local_10h char*&lt;/p&gt;
-
-&lt;hr /&gt;
-&lt;p&gt;Macros
-————————-
-r2 allows to write simple macros, using this contruction&lt;/p&gt;
-
-&lt;p&gt;[0x000000]&amp;gt; (qwe; pd 4; ao)		:- this will define a macro called qwe’ which runs sequentially first ‘pd 4’ then ‘ao’&lt;/p&gt;
-
-&lt;p&gt;[0x000000]&amp;gt; .(qwe)				:- calling the macro
-[0x000000]&amp;gt; (-qwe)				:- deleting the macro
-[0x000000]&amp;gt; (* 					:- listing all available macros&lt;/p&gt;
-
-&lt;p&gt;It’s possible to create a macro that takes arguments
-[0x000000]&amp;gt; (foo x y; pd $0; s +$1)&lt;/p&gt;
-
-&lt;p&gt;the arguments are named by index,starting from 0: $0,$1,..&lt;/p&gt;
-
-&lt;hr /&gt;
-&lt;p&gt;R2pipe
-——————
-$ pip install r2pipe&lt;/p&gt;
-
-&lt;p&gt;import r2pipe
-r2 = r2pipe.open(“/bin/ls”)
-r2.cmd(‘aa’)
-print(r2.cmd(“afl”))
-print(r2.cmdj(“aflj”))	# evaluate JSONs and returns an object&lt;/p&gt;
-
-&lt;hr /&gt;
-&lt;p&gt;To script radare2
-——————
-r2 -i &lt;scriptfile&gt; ...	:- run a script after loading the file
-r2 -I &lt;scriptfile&gt; ...	:- run a script before loading the file&lt;/scriptfile&gt;&lt;/scriptfile&gt;&lt;/p&gt;
-
-&lt;p&gt;[0x000000]&amp;gt; . scriptfile :- interpret the file&lt;/p&gt;
-
-&lt;p&gt;refer radare2 book PAGE 219,220,221&lt;/p&gt;
-
-&lt;hr /&gt;
-&lt;p&gt;Registers
-———————
-[0x000000]&amp;gt; dr 			:- display value of all registers
-[0x000000]&amp;gt; dr rip 		:- get value of ‘rip’
-[0x000000]&amp;gt; dr rip = esp :- set ‘rip’ as esp
-[0x000000]&amp;gt; dr* 		:- Appending ‘*’ will show radare commands&lt;/p&gt;
-
-&lt;p&gt;An old copy of registers is stored all the time to keep track of the changes during execution of a program being analyzed.
-[0x000000]&amp;gt; oregs 		:- to see old copy of registers&lt;/p&gt;
-
-&lt;p&gt;CTF solving using Radare2 link:-
-https://r2wiki.readthedocs.io/en/latest/home/ctf-solving-using-radare2/&lt;/p&gt;
-
-&lt;p&gt;[0x000000]&amp;gt; dm.			:-(See the dot) To know the memory-map we are currently in&lt;/p&gt;
-
-&lt;p&gt;[0x000000]&amp;gt; dmm 		:- to list modules(libraries,binaries loaded in memory)&lt;/p&gt;
-
-&lt;p&gt;[0x000000]&amp;gt; dmi. 	 	:- to see the closest symbol to the current adress&lt;/p&gt;
-
-&lt;hr /&gt;
-&lt;p&gt;HEAP
-——————
-[0x000000]&amp;gt; dmh 		:- to display a map of the heap which is useful for thosse who are interesting in inspecting the heap and its content&lt;/p&gt;
-
-&lt;p&gt;[0x000000]&amp;gt; dmhg 		:- to see a graph layout of heap&lt;/p&gt;
-
-&lt;hr /&gt;
-&lt;p&gt;Reverse Debugging
-————————–
-radare2 has reverse debugger,that can seek the program counter backward
-Firstly you need to save program state at the point you want to start recording&lt;/p&gt;
-
-&lt;p&gt;[0x000000]&amp;gt; dts+ 	:- syntax for recording
-[0x000000]&amp;gt; dts 	:- for recording and managing program states&lt;/p&gt;
-
-&lt;p&gt;After recording the states, we can seek pc back and forth to any points after saved address.
-ex:-
-	[0x000000]&amp;gt; 2dso
-	[0x000000]&amp;gt; dr rip
-	0x004028ae
-	[0x000000]&amp;gt; dsb
-	continue	until	0x004028a2
-	hit	breakpoint	at:	4028a2
-	[0x000000]&amp;gt; dr rip
-	0x004028a2&lt;/p&gt;
-
-&lt;p&gt;‘dcb’ seeks program counter until hit the latest breakpoints.So once set a breakpoint, you can back to it any time&lt;/p&gt;
-
-&lt;p&gt;[0x000000]&amp;gt; dts 	:- to see current recorded program states
-session:	0			at:0x004028a0			“”
-session:	1			at:0x004028c2			“”&lt;/p&gt;
-
-&lt;p&gt;we can also add comment
-‘dtsC’ to add comment to saved states
-[0x000000]&amp;gt; dtsC 0 program start
-[0x000000]&amp;gt; dtsC 1 decryption start
-[0x000000]&amp;gt; dts
-session:	0			at:0x004028a0			“program	start”
-session:	1			at:0x004028c2			“decryption	start&lt;/p&gt;
-
-&lt;p&gt;Program records can exported to file and of course import it
-[0x000000]&amp;gt; dtst records_for_test
-Session	saved in records_for_test.session and dump in records_for_test.dump
-[0x000000]&amp;gt; dtsf records_for_test&lt;/p&gt;
+   <title>Assembly Basics</title>
+   <link href="http://localhost:4000/2021/01/06/Assembly-Basics/"/>
+   <updated>2021-01-06T00:00:00+05:30</updated>
+   <id>http://localhost:4000/2021/01/06/Assembly-Basics</id>
+   <content type="html">&lt;p&gt;By default, the address in Radare2 is set to the entry point of the executable. This function is named &lt;em&gt;entry0&lt;/em&gt; by default.&lt;/p&gt;
 </content>
  </entry>
  
  <entry>
    <title>Basics of CPU</title>
-   <link href="http://localhost:4000/2021/01/04/Starting/"/>
-   <updated>2021-01-04T00:00:00+05:30</updated>
-   <id>http://localhost:4000/2021/01/04/Starting</id>
+   <link href="http://localhost:4000/2021/01/05/Starting/"/>
+   <updated>2021-01-05T00:00:00+05:30</updated>
+   <id>http://localhost:4000/2021/01/05/Starting</id>
    <content type="html">&lt;h3 id=&quot;common-known-cpu-architectures&quot;&gt;Common known CPU architectures&lt;/h3&gt;
 &lt;ul&gt;
   &lt;li&gt;32-bit(x-86)    // used on desktop and latptop&lt;/li&gt;

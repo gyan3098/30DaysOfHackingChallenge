@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: page
 title: Radare2-cheats
 ---
 
