@@ -108,7 +108,50 @@
         <div class="post">
   <h1 class="post-title">Binary</h1>
   <span class="post-date">07 Jan 2021</span>
-  <p>Some binary Basics</p>
+  <h3 id="patching-binary">Patching binary</h3>
+<p>In this post we will discuss about how to patch a binary with the help of <code class="language-plaintext highlighter-rouge">radare2</code> and it’s plugin <code class="language-plaintext highlighter-rouge">r2dec</code>.</p>
+
+<p>The link of the binary to be patched is <a href="http://localhost:4000/hacking/PatchMe0x01.zip">this </a>.</p>
+
+<p>To patch the binary run the radare2 in write mode.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>r2 <span class="nt">-w</span> ./PatchMe0x01.bin
+</code></pre></div></div>
+<p>Here some functions are not named properly, creating a little bit confusion.
+To understand the detailed explanation of the patching of binary, here is the <a href="https://maxkersten.nl/binary-analysis-course/assembly-basics/practical-case-patch-me-0x01/">link</a>
+Here I am showing the before and after assembly code along with the decompiled code.
+Run the following commands in <code class="language-plaintext highlighter-rouge">r2</code> and make sure <code class="language-plaintext highlighter-rouge">r2dec</code> is correctly installed to see the expected output.</p>
+<pre><code class="language-radare2">[0x08048310]&gt; aaaa
+[0x08048310]&gt; afl
+[0x08048310]&gt; s main
+[0x08048424]&gt; pdda
+</code></pre>
+<p>So, the below image shows the assembly code along with the decompiled code which is a very helpful and interesting features of <code class="language-plaintext highlighter-rouge">r2dec</code> for the beginners.
+<img src="http://localhost:4000/public/Patchme1.png" alt="Patchme Disassembled and Decompiled" />
+So, in above figure if we see that the value of argc is stored into register <code class="language-plaintext highlighter-rouge">ecx</code> which is then moved to <code class="language-plaintext highlighter-rouge">eax</code> and then <code class="language-plaintext highlighter-rouge">eax</code> is compared with 0. Since value of argc will always be greater than 1( to understand it see the <a href="/2021/01/06/Reversing/">page</a>), the condition at location <code class="language-plaintext highlighter-rouge">0x08048443</code> always evaluates to false. And also then 1 is assigned to variable <code class="language-plaintext highlighter-rouge">var_ch</code> and then compared with 2 which also evaluates to false, therefore the condition at <code class="language-plaintext highlighter-rouge">0x80485b</code> always evaluates to zero. Also there is no any buffer overflow or string or any type of vulnerability. Therefore we have to patch the binary.</p>
+
+<p>So, starting at the address, we would invert the condition.<code class="language-plaintext highlighter-rouge">wa</code> (write assembly)
+First seek to the address where we have to write by using s(seek) followed by address (0x0804843a)</p>
+<pre><code class="language-radare2">[0x08048424]&gt; s 0x0804843a
+</code></pre>
+<p>Now writing the assembly code(inverting the 1st condition)</p>
+<pre><code class="language-radare2">[0x0804843a]&gt; wa je 0x8048462
+Written 2 byte(s) (je 0x8048462) = wx 7426
+</code></pre>
+<p>Seeking to second writing location</p>
+<pre><code class="language-radare2">[0x0804843a]&gt; s 0x08048447
+</code></pre>
+<p>Now writing the assembly code again here to invert the 2nd condition</p>
+<pre><code class="language-radare2">[0x08048447]&gt; wa je 0x804845b
+Written 2 byte(s) (je 0x804845b) = wx 7412
+</code></pre>
+<p>To check the binary is patched or not, seek to the main function and run <code class="language-plaintext highlighter-rouge">pdda</code>.</p>
+<pre><code class="language-radare2">[0x08048447]&gt; s main
+[0x08048424]&gt; pdda
+</code></pre>
+
+<p><img src="http://localhost:4000/public/Patchme2.png" alt="Patchme, patched Disassembled and Decompiled" />
+So now run the patched binary and hurray, we patched it.
+<img src="http://localhost:4000/public/patchMeRun.png" alt="Patchme, patched" /></p>
 
 </div>
 

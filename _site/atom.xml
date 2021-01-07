@@ -4,7 +4,7 @@
  <title>My 30 Days of Hacking Challenge</title>
  <link href="http://localhost:4000/atom.xml" rel="self"/>
  <link href="http://localhost:4000/"/>
- <updated>2021-01-07T09:57:46+05:30</updated>
+ <updated>2021-01-07T14:17:41+05:30</updated>
  <id>http://localhost:4000</id>
  <author>
    <name>Gyan Ranjan</name>
@@ -17,7 +17,50 @@
    <link href="http://localhost:4000/2021/01/07/SomeBasicsOfBinary/"/>
    <updated>2021-01-07T00:00:00+05:30</updated>
    <id>http://localhost:4000/2021/01/07/SomeBasicsOfBinary</id>
-   <content type="html">&lt;p&gt;Some binary Basics&lt;/p&gt;
+   <content type="html">&lt;h3 id=&quot;patching-binary&quot;&gt;Patching binary&lt;/h3&gt;
+&lt;p&gt;In this post we will discuss about how to patch a binary with the help of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;radare2&lt;/code&gt; and it’s plugin &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;r2dec&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;The link of the binary to be patched is &lt;a href=&quot;http://localhost:4000/hacking/PatchMe0x01.zip&quot;&gt;this &lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;To patch the binary run the radare2 in write mode.&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;r2 &lt;span class=&quot;nt&quot;&gt;-w&lt;/span&gt; ./PatchMe0x01.bin
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Here some functions are not named properly, creating a little bit confusion.
+To understand the detailed explanation of the patching of binary, here is the &lt;a href=&quot;https://maxkersten.nl/binary-analysis-course/assembly-basics/practical-case-patch-me-0x01/&quot;&gt;link&lt;/a&gt;
+Here I am showing the before and after assembly code along with the decompiled code.
+Run the following commands in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;r2&lt;/code&gt; and make sure &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;r2dec&lt;/code&gt; is correctly installed to see the expected output.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-radare2&quot;&gt;[0x08048310]&amp;gt; aaaa
+[0x08048310]&amp;gt; afl
+[0x08048310]&amp;gt; s main
+[0x08048424]&amp;gt; pdda
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;So, the below image shows the assembly code along with the decompiled code which is a very helpful and interesting features of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;r2dec&lt;/code&gt; for the beginners.
+&lt;img src=&quot;http://localhost:4000/public/Patchme1.png&quot; alt=&quot;Patchme Disassembled and Decompiled&quot; /&gt;
+So, in above figure if we see that the value of argc is stored into register &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ecx&lt;/code&gt; which is then moved to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;eax&lt;/code&gt; and then &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;eax&lt;/code&gt; is compared with 0. Since value of argc will always be greater than 1( to understand it see the &lt;a href=&quot;/2021/01/06/Reversing/&quot;&gt;page&lt;/a&gt;), the condition at location &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;0x08048443&lt;/code&gt; always evaluates to false. And also then 1 is assigned to variable &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;var_ch&lt;/code&gt; and then compared with 2 which also evaluates to false, therefore the condition at &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;0x80485b&lt;/code&gt; always evaluates to zero. Also there is no any buffer overflow or string or any type of vulnerability. Therefore we have to patch the binary.&lt;/p&gt;
+
+&lt;p&gt;So, starting at the address, we would invert the condition.&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;wa&lt;/code&gt; (write assembly)
+First seek to the address where we have to write by using s(seek) followed by address (0x0804843a)&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-radare2&quot;&gt;[0x08048424]&amp;gt; s 0x0804843a
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now writing the assembly code(inverting the 1st condition)&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-radare2&quot;&gt;[0x0804843a]&amp;gt; wa je 0x8048462
+Written 2 byte(s) (je 0x8048462) = wx 7426
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Seeking to second writing location&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-radare2&quot;&gt;[0x0804843a]&amp;gt; s 0x08048447
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now writing the assembly code again here to invert the 2nd condition&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-radare2&quot;&gt;[0x08048447]&amp;gt; wa je 0x804845b
+Written 2 byte(s) (je 0x804845b) = wx 7412
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;To check the binary is patched or not, seek to the main function and run &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pdda&lt;/code&gt;.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-radare2&quot;&gt;[0x08048447]&amp;gt; s main
+[0x08048424]&amp;gt; pdda
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/public/Patchme2.png&quot; alt=&quot;Patchme, patched Disassembled and Decompiled&quot; /&gt;
+So now run the patched binary and hurray, we patched it.
+&lt;img src=&quot;http://localhost:4000/public/patchMeRun.png&quot; alt=&quot;Patchme, patched&quot; /&gt;&lt;/p&gt;
 </content>
  </entry>
  
@@ -71,7 +114,12 @@ Now, address of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&
    <link href="http://localhost:4000/2021/01/06/Assembly-Basics/"/>
    <updated>2021-01-06T00:00:00+05:30</updated>
    <id>http://localhost:4000/2021/01/06/Assembly-Basics</id>
-   <content type="html">&lt;p&gt;By default, the address in Radare2 is set to the entry point of the executable. This function is named &lt;em&gt;entry0&lt;/em&gt; by default.&lt;/p&gt;
+   <content type="html">&lt;p&gt;By default, the address in Radare2 is set to the entry point of the executable. This function is named &lt;em&gt;entry0&lt;/em&gt; by default.
+Some useful acronyms used in assembly:-&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;JNE : Jump Not Equal&lt;/li&gt;
+&lt;/ul&gt;
 </content>
  </entry>
  
