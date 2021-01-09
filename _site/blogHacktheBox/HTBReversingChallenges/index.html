@@ -9,12 +9,12 @@
 
   <title>
     
-      What's Jekyll? &middot; My 30 Days of Hacking Challenge
+      HTB Reversing Challenges &middot; My 30 Days of Hacking Challenge
     
   </title>
 
   
-  <link rel="canonical" href="http://localhost:4000/2021/01/01/whats-jekyll/">
+  <link rel="canonical" href="http://localhost:4000/blogHacktheBox/HTBReversingChallenges/">
   
 
   <link rel="stylesheet" href="http://localhost:4000/public/css/poole.css">
@@ -76,7 +76,7 @@
     
       
         
-          <a class="sidebar-nav-item" href="http://localhost:4000/blogHacktheBox/HTBReversingChallenges/">HTB Reversing Challenges</a>
+          <a class="sidebar-nav-item active" href="http://localhost:4000/blogHacktheBox/HTBReversingChallenges/">HTB Reversing Challenges</a>
         
       
     
@@ -117,56 +117,44 @@
       </div>
 
       <div class="container content">
-        <div class="post">
-  <h1 class="post-title">What's Jekyll?</h1>
-  <span class="post-date">01 Jan 2021</span>
-  <p><a href="https://jekyllrb.com">Jekyll</a> is a static site generator, an open-source tool for creating simple yet powerful websites of all shapes and sizes. From <a href="https://github.com/mojombo/jekyll/blob/master/README.markdown">the project’s readme</a>:</p>
+        <div class="page">
+  <h1 class="page-title">HTB Reversing Challenges</h1>
+  <h4 id="challenge-1">Challenge 1</h4>
+<p>The below is the challenge.
+<img src="http://localhost:4000/public/BabyHTB.png" alt="Image of Baby on HTB" /></p>
 
-<blockquote>
-  <p>Jekyll is a simple, blog aware, static site generator. It takes a template directory […] and spits out a complete, static website suitable for serving with Apache or your favorite web server. This is also the engine behind GitHub Pages, which you can use to host your project’s page or blog right here from GitHub.</p>
-</blockquote>
+<p>Decompiling the binary with <a href="https://github.com/rizinorg/cutter">Cutter</a> tool.</p>
+<pre><code class="language-C">// WARNING: Could not reconcile some variable overlaps
+// WARNING: [r2ghidra] Detected overlap for variable var_2ch
 
-<p>It’s an immensely useful tool and one we encourage you to use here with Lanyon.</p>
+undefined8 main(void)
+{
+    int32_t iVar1;
+    char *s;
+    int64_t var_38h;
+    int64_t var_30h;
+    char *s1;
+    char *var_8h;
 
-<p>Find out more by <a href="https://github.com/mojombo/jekyll">visiting the project on GitHub</a>.</p>
+    var_8h = "Dont run `strings` on this challenge, that is not the way!!!!";
+    puts("Insert key: ");
+    fgets(&amp;s1, 0x14, _reloc.stdin);
+    iVar1 = strcmp(&amp;s1, "abcde122313\n");
+    if (iVar1 == 0) {
+        s = (char *)0x594234427b425448;
+        var_38h = 0x3448545f5633525f;
+        var_30h._0_4_ = 0x455f5354;
+        var_30h._4_2_ = 0x7d5a;
+        puts(&amp;s);
+    } else {
+        puts("Try again later.");
+    }
+    return 0;
+}
+</code></pre>
+<p>Here we can easily see that the input is taken and compared with <code class="language-plaintext highlighter-rouge">abcde122313</code>. So, this is the required input.</p>
 
 </div>
-
-
-<div class="related">
-  <h2>Related posts</h2>
-  <ul class="related-posts">
-    
-      <li>
-        <h3>
-          <a href="/2021/01/09/Continue/">
-            Continue
-            <small>09 Jan 2021</small>
-          </a>
-        </h3>
-      </li>
-    
-      <li>
-        <h3>
-          <a href="/2021/01/07/SomeBasicsOfBinary/">
-            Binary
-            <small>07 Jan 2021</small>
-          </a>
-        </h3>
-      </li>
-    
-      <li>
-        <h3>
-          <a href="/2021/01/06/Reversing/">
-            Basics of Reversing
-            <small>06 Jan 2021</small>
-          </a>
-        </h3>
-      </li>
-    
-  </ul>
-</div>
-
 
       </div>
     </div>
